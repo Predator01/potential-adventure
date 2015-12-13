@@ -1,0 +1,43 @@
+{% extends "main.html" %}
+{% load static %}
+
+
+{% block extra_header %}
+
+{% endblock %}
+
+{%block content %}
+    <!-- ******DOCS****** -->
+    <section id="docs" class="docs section">
+        <div class="container">
+            <div class="docs-inner">
+            <h2 class="title text-center">Graphs</h2>
+            <div class="block">
+                <h3 class="sub-title text-center">Data</h3>
+                <p>This section is going to provide some graphs from the data stored in the database.
+                    The first graph is showing the frequency by cluster. Each cluster is made by a number of words that
+                    represent an affect(cluster).
+                </p>
+            </div><!--//block-->
+            <p align="center"><img align="center" src="{% static "images/plot/count_by_cluster_0.png" %}" width="400"></p>
+
+            <div class="block">
+                <h3 class="sub-title text-center">Word Frequency</h3>
+                <p>The next graph, shows the word frequency in the tweets already proccessed, with this graph is possible
+                to see what are the words most used. The graph is limited to 1000 words</p>
+
+            </div><!--//block-->
+            <p align="center"><img align="center" src="{% static "images/plot/count_by_words.png" %}" width="400"></p>
+            <div class="block">
+                <h3 class="sub-title text-center">Tweets distribution</h3>
+                <p>In order to see how the tweets are distributed, the next graph shows how the tweets are mapped
+                according to the clusters selected.</p>
+            </div><!--//block-->
+                <p align="center"><img align="center" src="{% static "images/plot/a_tweets_map.png" %}" width="400"></p>
+                <p align="center"><img align="center" src="{% static "images/plot/Valence x, Arousal y-K10.png" %}" width="400"></p>
+
+            </div><!--//docs-inner-->
+        </div><!--//container-->
+    </section><!--//features-->
+
+{% endblock %}

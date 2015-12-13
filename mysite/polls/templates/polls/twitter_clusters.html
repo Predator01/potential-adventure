@@ -1,0 +1,107 @@
+{% extends "main.html" %}
+{% load static %}
+
+
+{% block extra_header %}
+
+{% endblock %}
+
+{%block content %}
+<!-- ******DOCS****** -->
+<section id="docs" class="docs section">
+    <div class="container">
+        <div class="docs-inner">
+        <h2 class="title text-center">Clusters</h2>
+        <div class="block">
+            <h3 class="sub-title text-center">Introduction</h3>
+            <p>In order to analyze the words that are used in this project,
+                <a href="http://csea.phhp.ufl.edu/media/anewmessage.html" target="_blank">Affective Norms for English Words (ANEW)</a>
+                , which provides a set of normative emotional ratings for words in the English language. This set of verbal materials
+                have been rated in terms of pleasure, arousal, and dominance.</p>
+            <p>
+                In this project the data that is being analyzed is taken from twitter, and you can see it by clicking the username in the "Tweets" section.
+                The objective is to determine what is the affect of the person based in the text in the tweet.
+                And in real life application it could help to determine if a person has a suicide tendency and prevent a disaster.
+            </p>
+        </div><!--//block-->
+        <div class="block">
+            <h3 class="sub-title text-center">K-means
+            </h3>
+            <p>The <a href="http://home.deib.polimi.it/matteucc/Clustering/tutorial_html/kmeans.html" target="_blank">K means</a>
+                clustering method is used in order to determine the number and types of emotions being detected.
+            </p>
+            <p>
+            The model used for the affect classification is the developed by Russell and Feldman Barrett,
+            the structure core affect in the model can be described by two independent dimensions.
+                <ul>
+                    <li>The degree of pleasantness</li>
+                    <li>The degree of activation</li>
+                </ul>
+            The pleasure or displeasure can be described as good - bad mood, positive - negative, pleasure - pain. The relation or simialrity between
+            this types summarizes how well one is doing.
+            The activation refers to a sense of mobilization or energy. The same relation as sleep through drowsiness, alertness,
+            relaxation, hyperactive, frenetic. The activation rises and falls during the day depending one's own physical activity,
+            and the events of the day.
+            The distribution and the result of the graph resulting by the combination of pleasure and activation, represents the distribution
+            of different possible affects, but the center of the space is an neutral point, which can not tell the affect, so it was considered as a
+            "Unknown" affect.
+            </p>
+            <p align="center"><img align="center" src="{% static "img/russellmodel.png" %}" width="400"></p>
+            <p>
+                Now, analyzing the model. A positive affect consists of a feeling that vary in activation, as the same way in negative affects.
+                High activation consist in a feeling that vary in pleasure.
+
+                The project does not take into consideration of bipolarity or the detection of severe high and low moods and changes in energy, thinking and behavior,
+                based on the text, and it brings false positives. So, it is assume that a neurological reaction has a psychological event
+                which can be represented as a positive and negative reaction or stimulus.
+            </p>
+
+            <div class="block">
+                <h3 class="sub-title text-center">Results</h3>
+                <p>
+                    The analysis of the k-means could be seen in the section below.
+                    In order to provide a wide range of analysis the number of clusters used were
+                    from 1 to 20 and the results of all of them are in the section below.
+
+                    The best graph that describe the data is using 6 clusters, as it can be seen
+                    according to the words that are around each cluster.
+                </p>
+
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                {% for graph in clusters_img %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                            <h4 class="panel-title">
+                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{ graph.4 }}" aria-expanded="false" aria-controls="collapseTwo">
+                                      {{ graph.0 }}
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo{{ graph.4 }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo{{ graph.4 }}">
+                            <div class="panel-body">
+                                <img align="center" src="{% get_static_prefix %}images/plot/{{ graph.1|default:"" }}" width="200">
+                                <img align="center" src="{% get_static_prefix %}images/plot/{{ graph.2|default:"" }}" width="200">
+                                <img align="center" src="{% get_static_prefix %}images/plot/{{ graph.3|default:"" }}" width="200">
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div><!--//block-->
+        <div class="block">
+            <h3 class="sub-title text-center">Full Documentation</h3>
+            <p>
+                More documentation will be provided in this server as long as I develop it, so meanwhile feel free to contact me
+                if you have any suggestion, question or complaint about this project.
+                Also if you have a nice and
+            </p>
+
+        </div><!--//block-->
+
+        </div><!--//docs-inner-->
+    </div><!--//container-->
+</section><!--//features-->
+
+
+{% endblock %}

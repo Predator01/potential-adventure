@@ -1,0 +1,99 @@
+{% extends "main.html" %}
+{% load static %}
+
+
+{% block extra_header %}
+
+
+<script>
+    // register our custom symbols to nvd3
+    // make sure your path is valid given any size because size scales if the chart scales.
+    nv.utils.symbolMap.set('thin-x', function(size) {
+        size = Math.sqrt(size);
+        return 'T' + (-size/2) + ',' + (-size/2) +
+                'l' + size + ',' + size +
+                'm0,' + -(size) +
+                'l' + (-size) + ',' + size;
+    });
+
+    // create the chart
+    var chart;
+
+    {% for tup in html_containers %}
+        nv.addGraph(function() {
+            chart = nv.models.scatterChart()
+                .showDistX(true)
+                .showDistY(true)
+                .useVoronoi(true)
+                .color(d3.scale.category10().range())
+                .duration(3000)
+            ;
+            chart.dispatch.on('renderEnd', function(){
+                console.log('render complete');
+            });
+
+            chart.xAxis.tickFormat(d3.format('.02f'));
+            chart.yAxis.tickFormat(d3.format('.02f'));
+            chart.tooltipContent(function(key) {
+                return '<h2>' + key + '</h2>';
+            });
+
+            d3.select('#{{ tup.0 }} svg')
+                .datum({{tup.1|safe}})
+                .call(chart);
+
+{#            nv.utils.windowResize(chart.update);#}
+
+            chart.dispatch.on('stateChange', function(e) { ('New State:', JSON.stringify(e)); });
+            return chart;
+        });
+    {% endfor %}
+
+var sketch = d3.select("body").append("custom:sketch")
+    .attr("width", w)
+    .attr("height", h)
+    .call(custom);
+
+</script>
+
+{% endblock %}
+
+{%block content %}
+    <!-- ******DOCS****** -->
+    <section id="docs" class="docs section">
+        <div class="container">
+            <div class="docs-inner">
+            <h2 class="title text-center">Graphs</h2>
+            <div class="block">
+                <h3 class="sub-title text-center">Data</h3>
+                <p>This section is going to provide some graphs from the data stored in the database.</p>
+                <!-- GRAPH CONTAINER -->
+                <div id='{{ html_containers.0.0 }}' class='with-3d-shadow with-transitions' style='width: 500px; height: 400px'><svg></svg></div>
+            </div><!--//block-->
+
+            <div class="block">
+                <h3 class="sub-title text-center">CSS</h3>
+                <p>Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus.</p>
+                <!-- GRAPH CONTAINER -->
+                <div id='{{ html_containers.1.0 }}' class='with-3d-shadow with-transitions' style='width: 500px; height: 400px'><svg></svg></div>
+
+            </div><!--//block-->
+
+            <div class="block">
+                <h3 class="sub-title text-center">JavaScript</h3>
+                <p>Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Lorem ipsum dolor sit amet, consectetuer adipiscing elit ligula eget dolor.</p>
+
+            </div><!--//block-->
+            <div class="block">
+                <h3 class="sub-title text-center">Full Documentation</h3>
+                <p>If your documentation is very long you can host the full docs page (including FAQ etc) on GitHub and provide a Call to Action button below to direct users there.</p>
+                <p class="text-center">
+                    <a class="btn btn-cta-primary" href="https://github.com/twbs/bootstrap" target="_blank">More on GitHub</a>
+                </p>
+            </div><!--//block-->
+
+            </div><!--//docs-inner-->
+        </div><!--//container-->
+    </section><!--//features-->
+
+{% endblock %}

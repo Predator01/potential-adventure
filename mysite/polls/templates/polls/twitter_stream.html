@@ -1,0 +1,203 @@
+{% extends "main.html" %}
+{% load static %}
+
+
+{% block extra_header %}
+{% endblock %}
+
+{%block content %}
+<section id="about" class="about section" style="height: 1300px;">
+
+    <div id="content">
+        <div class="wrapper">
+            <div class="panel right" style="height: 560px;">
+				<h1> Result: </h1>
+				<p>
+					In this section you will see the result of the analysis and the classification of the tweet in the emotions:
+                    <ul>
+                        <li> "Calm, Relaxed, Serene" </li>
+                        <li> "Tense, Surprise, Alert" </li>
+                        <li> "Excited, Elated, Happy" </li>
+                        <li> "Calm, Fatigued, Lethargic" </li>
+                        <li> "Depressed, Sad" </li>
+                        <li> "Disgust, Anger, Fear" </li>
+{#                        <li>"Anger, Disgust"</li>#}
+{#                        <li>"Serene, Happy"</li>#}
+{#                        <li>"Nervous, Tense"</li>#}
+{#                        <li>"Calm, Relaxed"</li>#}
+{#                        <li>"Alert, Surprise"</li>#}
+{#                        <li>"Lethargic, Fatigued"</li>#}
+{#                        <li>"Sad, Depressed"</li>#}
+{#                        <li>"Excited, Elated"</li>#}
+{#                        <li>"Unknown"</li>#}
+                    </ul>
+                    <p>  Note: The Unknown emotions mean that the tweet was processed but
+                        there is no enough arguments to determine to which emotion it belongs</p>
+                    <p> By clicking the username, you will be redirected to the real tweet in Twitter.
+                        The next section "Clusters" show the analysis for the classes </p>
+
+				</p>
+			</div>
+
+            <div id="ribbits" class="panel left">
+                <h1>Pyrocephalus tyrant</h1>
+                {% for data in datum %}
+                <div class="ribbitWrapper">
+                    <img class="avatar" src="{% static "img/man.png" %}" >
+                    <span class="name">
+                        <a target="_blank" href="{{ data.0.url }}">{{ data.0.author }}</a>
+                    </span> @{{ data.0.author }}
+                    <span class="time">
+                        {% with now as today %}
+                            {{ data.0.date|timesince:today }} ago
+                        {% endwith %}
+                    </span>
+                    <p>
+                        {{ data.0.text }}
+                    </p>
+                    <p>
+                        <div>
+                            {% if data.0.status.name == "Analyzed" %}
+                                <span class="label label-success">Analyzed</span>
+                                <span class="label label-primary">language: {{ data.0.language }}</span>
+                                {% if data.0.label_age %}
+                                    <span class="label label-primary">Age: {{ data.0.label_age }}</span>
+                                {% endif %}
+                                {% if data.0.label_M_F %}
+                                    <span class="label label-primary">Gender: {{ data.0.label_M_F }}</span>
+                                {% endif %}
+                                {% if data.0.label_id3 %}
+                                    <span class="label label-primary">ID3: {{ data.0.label_id3 }}</span>
+                                {% endif %}
+                            {% elif data.0.status.name == "Ignored" %}
+                                <span class="label label-danger">Ignored</span>
+                            {% elif data.0.status.name == "Captured" %}
+                                <span class="label label-primary">Captured</span>
+                            {% elif data.0.status.name == "Train" %}
+                                <span class="label label-warning">Train</span>
+                            {% elif data.0.status.name == "No Data" %}
+                                <span class="label label-default">No Data</span>
+                            {% elif data.0.status.name == "Repited" %}
+                                <span class="label label-info">Repited</span>
+                            {% endif %}
+
+                            {% for btn in data.1 %}
+                                {# Single button #}
+                                {% if btn.name %}
+                                <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                                    <button type="button" class="btn btn-{{ btn.btn_type }} dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        {{ btn.name|default:"No Data" }}
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        {% for val in btn.values %}
+                                            <li><a href="#">{{ val }}</a></li>
+                                            <li class="divider"></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </p>
+                </div>
+                {% empty %}
+                    <div class="ribbitWrapper">
+                        <img class="avatar" src="{% static "img/man.png" %}" >
+                        <span class="name"> Usename </span> @username <span class="time">0:00seg</span>
+                        <p>
+                            No data
+                        </p>
+                        {# LABEL VA #}
+                        <span class="label label-default"> < status ></span>
+                        <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                LabelVA (<a><span class="bagde">#</span></a>)
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">X</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Y</a></li>
+                            </ul>
+                        </div>
+                        {# LABEL LabelDA  #}
+                        <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                LabelDA (<a><span class="bagde">#</span></a>)
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                          </ul>
+                        </div>
+                        {# LABEL LabelDV  #}
+                        <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                LabelDV (<a><span class="bagde">#</span></a>)
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                          </ul>
+                        </div>
+                        {# LABEL Found  #}
+                        <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                Found (<a><span class="bagde">#</span></a>)
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                          </ul>
+                        </div>
+                        {# LABEL Search  #}
+                        <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                Search (<a><span class="bagde">#</span></a>)
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                          </ul>
+                        </div>
+                        {# LABEL LabelDA  #}
+                        <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                LabelDA (<a><span class="bagde">#</span></a>)
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                          </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+
+</section><!--//about-->
+
+{% endblock %}

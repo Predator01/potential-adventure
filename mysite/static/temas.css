@@ -1,0 +1,38 @@
+
+div.temas {
+	display: block;
+	position: absolute;
+	background-color: #D9853B;
+	height: 100%;
+	z-index: 1000;
+}
+
+div.temas ul {
+	list-style-type: none;
+	/*visibility: hidden;*/
+	display: none;
+}
+
+div.temas:hover  ul {
+	visibility: visible;
+	display: inline-block;
+}
+
+div.temas a {
+	color: white;
+	text-decoration: none;
+}
+
+div.temas-title {
+	font-size: larger;
+	visibility: visible;
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+	margin-right: auto;
+	margin-left: auto;
+	transform: rotate(90deg);
+	-ms-transform: rotate(90deg); /* IE 9 */
+	-webkit-transform: rotate(90deg);
+	margin: auto; /* Safari and Chrome */
+}
